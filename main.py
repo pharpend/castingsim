@@ -47,9 +47,9 @@ def intermittent_process(iteration_num:int):
 
     # This code prints out the various statistics
     print('\nIteration: %d' % iteration_num)
-    print('==General Pool==')
-    print('Mean IQ: %.2f' % np.mean(iqs))
-    print('Stdv IQ: %.2f' % np.std(iqs))
+    # print('==General Pool==')
+    # print('Mean IQ: %.2f' % np.mean(iqs))
+    # print('Stdv IQ: %.2f' % np.std(iqs))
     group_num = -1
     for group in individual_groups:
         group_num += 1
