@@ -18,34 +18,49 @@ This program is a discrete process.
 
 import sys
 import traceback
+import matplotlib.pyplot as plt
 import numpy as np
 import pool
 
-# First, here are some global_variables
-global number_of_people
-global number_of_groups
-global number_of_runs
-global mean
-global standard_deviation
-global heritability
-global genic_population
-global env_population
-global general_pool
-global individual_groups
-
-def intermittent_process():
+def intermittent_process(iteration_num:int):
     '''
     This is the code that runs between the groups getting split up, and then put
     back together. The idea is, people can put whatever stat-collecting code in
     here.
-
-    Currently, it just has each group mate.
     '''
 
+    global general_pool
     global individual_groups
+    global number_of_hist_bins
+    global text_only
 
+    iqs = general_pool.get_distribution()
+    if not text_only:
+        # Make a histogram. This code was stolen from Stack Overflow
+        # <http://stackoverflow.com/questions/5328556/histogram-matplotlib>.
+        number_of_hist_bins = 250
+        hist, bins = np.histogram(iqs, bins = number_of_hist_bins)
+        width = 0.7*(bins[1]-bins[0])
+        center = (bins[:-1]+bins[1:])/2
+        plt.bar(center, hist, align = 'center', width = width)
+        plt.show()
+
+    # This code prints out the various statistics
+    print('\nIteration: %d' % iteration_num)
+    print('==General Pool==')
+    print('Mean IQ: %.2f' % np.mean(iqs))
+    print('Stdv IQ: %.2f' % np.std(iqs))
+    group_num = -1
+    for group in individual_groups:
+        group_num += 1
+        dist = group.get_distribution()
+        
+        print('==Group %d==' % group_num)
+        print('Mean IQ: %.2f' % np.mean(dist))
+        print('Stdv IQ: %.2f' % np.std(dist))
+        
     # Each group should mate
-    [group.mate_pool() for group in individual_groups]
+    individual_groups = [group.mate_pool() for group in individual_groups]
 # end of intermittent_process()
     
 def main():
@@ -59,6 +74,7 @@ def main():
     global mean
     global standard_deviation
     global heritability
+    global text_only
 
     try:
         number_of_people = int(sys.argv[1])
@@ -67,6 +83,15 @@ def main():
         mean = float(sys.argv[4])
         standard_deviation = float((sys.argv[5]))
         heritability = float(sys.argv[6])
+        text_only = float(sys.argv[7])
+
+        print('Number of people: ', number_of_people)
+        print('Number of groups: ', number_of_groups)
+        print('Number of runs: ', number_of_runs)
+        print('Mean: ', mean)
+        print('Standard deviation: ', standard_deviation)
+        print('Heritability: ', heritability)
+        print('Text-only output? ', text_only)
         
         sim()
         
@@ -74,13 +99,14 @@ def main():
     except Exception as e:
         print(traceback.format_exc())
         
-        help_message = 'Usage: python main.py n g r m s h\n'
+        help_message = 'Usage: python main.py n g r m s h t\n'
         help_message += 'n = sample size\n'
         help_message += 'g = number of groups\n'
         help_message += 'r = number of runs\n'
         help_message += 'm = mean\n'
         help_message += 's = standard deviation\n'
         help_message += 'h = heritability\n'
+        help_message += 't = text output only?\n'
         
         print(help_message)
         exit()
@@ -155,10 +181,10 @@ def sim():
         individual_groups = general_pool.partition(number_of_groups)
         
         # Run whatever is in intermittent_process()
-        intermittent_process()
+        intermittent_process(i)
         
-        general_pool.drain()
         # Conglomerate the pools
+        general_pool.drain()
         for group in individual_groups:
             general_pool += group
             

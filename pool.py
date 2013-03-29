@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 '''
 Pool - this is code for a group of people
@@ -49,6 +49,15 @@ class Pool:
         self.genic_population = np.array([])
         self.env_population = np.array([])
     # end of drain()
+
+    def get_distribution(self):
+        '''
+        This simply returns a list contiaining the IQ of each person.
+        '''
+
+        iqs = [g+e for g, e in zip(self.genic_population, self.env_population)]
+        return iqs
+    # end of get_distribution()
 
     def make(self):
         '''
