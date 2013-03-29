@@ -126,24 +126,20 @@ def make_pool():
     global genic_population
     global env_population
 
-    # Compute the genic mean; easy.
-    genic_mean = mean*heritability
-    
     # The genic std is a bit harder
     variance = standard_deviation**2
     genic_variance = heritability*variance
     genic_standard_deviation = genic_variance**0.5
 
     # The environmential variables are whatever is left
-    env_mean = mean - genic_mean
     env_variance = variance - genic_variance
     env_standard_deviation = env_variance**0.5
 
     # First, make the population according to a normal distribution
-    genic_population = np.random.normal(genic_mean,
+    genic_population = np.random.normal(mean,
                                         genic_standard_deviation,
                                         number_of_people)
-    env_population = np.random.normal(env_mean,
+    env_population = np.random.normal(0,
                                       env_standard_deviation,
                                       number_of_people)
 

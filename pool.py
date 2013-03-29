@@ -132,7 +132,7 @@ class Pool:
             '''
             child1 = [child1_genic_val, child1_env_val]
             child2 = [child2_genic_val, child2_env_val]
-#           print(child1)
+            # print(child1)
 
             children.append(child1)
             children.append(child2)
