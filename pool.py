@@ -55,7 +55,7 @@ class Pool:
         This simply returns a list contiaining the IQ of each person.
         '''
 
-        iqs = [g+e for g, e in zip(self.genic_population, self.env_population)]
+        iqs = [g+e for g, e in zip(self.genetic_population, self.env_population)]
         return iqs
     # end of get_distribution()
 
@@ -66,11 +66,13 @@ class Pool:
         
         '''
         This list comprehension is admittedly a bit dense. Basically, it makes a
-        tuple associating each genic value with an environmental value. Then, it
+        tuple associating each genetic value with an environmental value. Then, it
         makes a list of those tuples, and convert it into a numpy array.
+
+        TODO: Have number of kids determined by Poisson distribution with mu=2.
         '''
         self.persons = [(g, e)
-                        for g, e in zip(self.genic_population,
+                        for g, e in zip(self.genetic_population,
                                         self.env_population)]
         self.persons.sort()
         self.persons = np.array(self.persons)
@@ -85,7 +87,7 @@ class Pool:
         '''
         Here is the process: first, it shuffles the pool. Then, it splits the
         pool into two equal parts, each part being one sex. Then, it averages
-        the genic values of the two mates. It produces two children per pair.
+        the genetic values of the two mates. It produces two children per pair.
         '''
 
         # Environmental normal values
@@ -104,20 +106,22 @@ class Pool:
 
         # Mate 
 #       children = []
-        all_genic_vals = []
+        all_genetic_vals = []
         all_env_vals = []
         for pair_num in range(n_pairs):
             person1 = people_ls1[pair_num]
             person2 = people_ls2[pair_num]
 #           print(person1)
 
-            person1_genic = person1[0]
-            person2_genic = person2[0]
+            person1_genetic = person1[0]
+            person2_genetic = person2[0]
             
-            genic_vals = [person1_genic, person2_genic]
+            # make the genetic random seeds for the kid
+            genetic_vals = [person1_genetic, person2_genetic]
             genic_mean = np.mean(genic_vals)
-            genic_std = np.std(genic_vals)
+            genic_std = np.std(self.genic_population)*(2**0.5)
             
+            # the genic values for the two kids
             child1_genic_val = r.gauss(genic_mean, genic_std)
             child2_genic_val = r.gauss(genic_mean, genic_std)
 #           print(child1_genic_val)

@@ -96,7 +96,7 @@ def main():
         sim()
         
     # If the arguments are invalid or don't exist
-    except Exception as e:
+    except Exception:
         print(traceback.format_exc())
         
         help_message = 'Usage: python main.py n g r m s h t\n'
@@ -114,7 +114,7 @@ def main():
 
 def make_pool():
     '''
-    This function makes, and returns a list of Person objects.
+    This function makes, and returns a Pool object.
     '''
 
     global number_of_people
