@@ -123,27 +123,27 @@ def make_pool():
     global mean
     global standard_deviation
     global heritability
-    global genic_population
+    global genetic_population
     global env_population
 
-    # The genic std is a bit harder
+    # The genetic std is a bit harder
     variance = standard_deviation**2
-    genic_variance = heritability*variance
-    genic_standard_deviation = genic_variance**0.5
+    genetic_variance = heritability*variance
+    genetic_standard_deviation = genetic_variance**0.5
 
     # The environmential variables are whatever is left
-    env_variance = variance - genic_variance
+    env_variance = variance - genetic_variance
     env_standard_deviation = env_variance**0.5
 
     # First, make the population according to a normal distribution
-    genic_population = np.random.normal(mean,
-                                        genic_standard_deviation,
+    genetic_population = np.random.normal(mean,
+                                        genetic_standard_deviation,
                                         number_of_people)
     env_population = np.random.normal(0,
                                       env_standard_deviation,
                                       number_of_people)
 
-    return pool.Pool(genic_population, env_population)
+    return pool.Pool(genetic_population, env_population)
 # end of make_pool()
     
 
@@ -152,9 +152,9 @@ def sim():
     This function actually runs the simulation.
 
     So, assuming the heritability is h, and the trait we are measuring is IQ,
-    the genic mean for IQ is h*(mean_iq).
+    the genetic mean for IQ is h*(mean_iq).
 
-    The variance for IQ would be standard_deviation**2. So, the genic standard
+    The variance for IQ would be standard_deviation**2. So, the genetic standard
     deviation is sqrt(standard_deviation**2)*.8)
     '''
     

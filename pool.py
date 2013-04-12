@@ -18,23 +18,23 @@ class Pool:
         Add two Pools together. Overloads the + operator
         '''
         
-        all_genic = list(self.genic_population) + list(other.genic_population)
+        all_genetic = list(self.genetic_population) + list(other.genetic_population)
         all_env = list(self.env_population) + list(other.env_population)
         
-        all_genic = np.array(all_genic)
+        all_genetic = np.array(all_genetic)
         all_env = np.array(all_env)
 
-        return Pool(all_genic, all_env)
+        return Pool(all_genetic, all_env)
     # end of + overloading
 
     def __init__(self,
-                 genic_population: np.array,
+                 genetic_population: np.array,
                  env_population: np.array):
         '''
         This sets instance variables equal to arguments, then calls make().
         '''
 
-        self.genic_population = genic_population
+        self.genetic_population = genetic_population
         self.env_population = env_population
 
         self.make()
@@ -46,7 +46,7 @@ class Pool:
         Empties the pool.
         '''
 
-        self.genic_population = np.array([])
+        self.genetic_population = np.array([])
         self.env_population = np.array([])
     # end of drain()
 
@@ -118,24 +118,24 @@ class Pool:
             
             # make the genetic random seeds for the kid
             genetic_vals = [person1_genetic, person2_genetic]
-            genic_mean = np.mean(genic_vals)
-            genic_std = np.std(self.genic_population)*(2**0.5)
+            genetic_mean = np.mean(genetic_vals)
+            genetic_std = np.std(self.genetic_population)*(2**0.5)
             
-            # the genic values for the two kids
-            child1_genic_val = r.gauss(genic_mean, genic_std)
-            child2_genic_val = r.gauss(genic_mean, genic_std)
-#           print(child1_genic_val)
+            # the genetic values for the two kids
+            child1_genetic_val = r.gauss(genetic_mean, genetic_std)
+            child2_genetic_val = r.gauss(genetic_mean, genetic_std)
+#           print(child1_genetic_val)
 
             child1_env_val = r.gauss(env_mean, env_std)
             child2_env_val = r.gauss(env_mean, env_std)
 
-            all_genic_vals.append(child1_genic_val)
-            all_genic_vals.append(child2_genic_val)
+            all_genetic_vals.append(child1_genetic_val)
+            all_genetic_vals.append(child2_genetic_val)
             all_env_vals.append(child1_env_val)
             all_env_vals.append(child2_env_val)
             '''
-            child1 = [child1_genic_val, child1_env_val]
-            child2 = [child2_genic_val, child2_env_val]
+            child1 = [child1_genetic_val, child1_env_val]
+            child2 = [child2_genetic_val, child2_env_val]
             # print(child1)
 
             children.append(child1)
@@ -143,10 +143,10 @@ class Pool:
             '''
         # end for
 
-        all_genic_vals = np.array(all_genic_vals)
+        all_genetic_vals = np.array(all_genetic_vals)
         all_env_vals = np.array(all_env_vals)
         
-        return Pool(all_genic_vals, all_env_vals)
+        return Pool(all_genetic_vals, all_env_vals)
     # end of mate()
         
     def partition(self,
@@ -168,10 +168,10 @@ class Pool:
         groups_all = []
         # For each group
         for group in groups_array:
-            # Get the genic values
-            genic = [vals[0] for vals in group]
+            # Get the genetic values
+            genetic = [vals[0] for vals in group]
             env = [vals[1] for vals in group]
-            new_pool = Pool(genic, env)
+            new_pool = Pool(genetic, env)
             groups_all.append(new_pool)
 
         return groups_all
