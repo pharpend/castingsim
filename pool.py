@@ -79,78 +79,58 @@ class Pool:
         
     # end of make()
 
-    def mate_pool(self):
+    def poisson_mate(self):
         '''
-        This has everyone in the Pool to mate. It returns another Pool.
+        Mate the pool randomly.
         '''
 
         '''
-        Here is the process: first, it shuffles the pool. Then, it splits the
-        pool into two equal parts, each part being one sex. Then, it averages
-        the genetic values of the two mates. It produces two children per pair.
+        So, the way this works is, the algorithm picks two random people out of
+        the pool, mates them, produces one child. It does this until there are
+        enough children.
+
+        This is roughly based on the former mate_pool() function. Look at
+        previous versions of this file to get it.
         '''
 
         # Environmental normal values
-        env_mean = np.mean(self.env_population)
-        env_std = np.std(self.env_population)
-        
-        # Shuffle the pool
-        people_ls = list(self.persons)
-        r.shuffle(people_ls)
-        people_ls = np.array(people_ls)
-#       print(people_ls)
+        pool_env_mean = np.mean(self.env_population)
+        pool_env_std = np.std(self.env_population)
 
-        # Split it up
-        people_ls1, people_ls2 = np.split(people_ls, 2)
-        n_pairs = len(people_ls1)
+        # Values for the children
+        children_genetic_vals = []
+        children_env_vals = []
 
-        # Mate 
-#       children = []
-        all_genetic_vals = []
-        all_env_vals = []
-        for pair_num in range(n_pairs):
-            person1 = people_ls1[pair_num]
-            person2 = people_ls2[pair_num]
-#           print(person1)
+        # Do this until we have enough children
+        while len(children_genetic_vals) < len(self.persons):
+            # Choose two people
+            parents = [r.choice(self.persons) for i in range(2)]
 
-            person1_genetic = person1[0]
-            person2_genetic = person2[0]
-            
-            # make the genetic random seeds for the kid
-            genetic_vals = [person1_genetic, person2_genetic]
-            genetic_mean = np.mean(genetic_vals)
-            genetic_std = np.std(self.genetic_population)*(2**0.5)
-            
-            # the genetic values for the two kids
-            child1_genetic_val = r.gauss(genetic_mean, genetic_std)
-            child2_genetic_val = r.gauss(genetic_mean, genetic_std)
-#           print(child1_genetic_val)
+            # Get the genetic normal values
+            parent_genetic_vals = np.array([parent[0] for parent in parents])
+            parent_genetic_mean = np.mean(parent_genetic_vals)
+            parent_genetic_std = np.std(self.genetic_population) * np.sqrt(2)
 
-            child1_env_val = r.gauss(env_mean, env_std)
-            child2_env_val = r.gauss(env_mean, env_std)
+            # A note. The square root of 2 was a fudge factor I was told to
+            # implement. I won't justify it.
 
-            all_genetic_vals.append(child1_genetic_val)
-            all_genetic_vals.append(child2_genetic_val)
-            all_env_vals.append(child1_env_val)
-            all_env_vals.append(child2_env_val)
-            '''
-            child1 = [child1_genetic_val, child1_env_val]
-            child2 = [child2_genetic_val, child2_env_val]
-            # print(child1)
+            # Make the children
+            child_genetic_val = np.random.normal(parent_genetic_mean,
+                                                 parent_genetic_std)
+            child_env_val = np.random.normal(pool_env_mean, pool_env_std)
 
-            children.append(child1)
-            children.append(child2)
-            '''
-        # end for
+            # Add them
+            children_genetic_vals.append(child_genetic_val)
+            children_env_vals.append(child_env_val)
+        # end of loop
 
-        all_genetic_vals = np.array(all_genetic_vals)
-        all_env_vals = np.array(all_env_vals)
-        
-        return Pool(all_genetic_vals, all_env_vals)
-    # end of mate()
+        # Make a pool, return it
+        return Pool(children_genetic_vals, children_env_vals)
+    # end of poisson_mate
         
     def partition(self,
-                  number_of_groups: int = 2):
+                  group_sizes : list,
+                  number_of_groups : int = 2):
         '''
         Partitions the pool into equal sized groups.
         '''

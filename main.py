@@ -60,7 +60,7 @@ def intermittent_process(iteration_num:int):
         print('Stdv IQ: %.2f' % np.std(dist))
         
     # Each group should mate
-    individual_groups = [group.mate_pool() for group in individual_groups]
+    individual_groups = [group.poisson_mate() for group in individual_groups]
 # end of intermittent_process()
     
 def main():
