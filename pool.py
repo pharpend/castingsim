@@ -68,15 +68,12 @@ class Pool:
         This list comprehension is admittedly a bit dense. Basically, it makes a
         tuple associating each genetic value with an environmental value. Then, it
         makes a list of those tuples, and convert it into a numpy array.
-
-        TODO: Have number of kids determined by Poisson distribution with mu=2.
         '''
         self.persons = [(g, e)
                         for g, e in zip(self.genetic_population,
                                         self.env_population)]
         self.persons.sort()
         self.persons = np.array(self.persons)
-        
     # end of make()
 
     def poisson_mate(self):
@@ -129,10 +126,9 @@ class Pool:
     # end of poisson_mate
         
     def partition(self,
-                  group_sizes : list,
-                  number_of_groups : int = 2):
+                  group_sizes : list):
         '''
-        Partitions the pool into equal sized groups.
+        Partitions the pool into groups of a specified size.
         '''
         
         '''
@@ -142,8 +138,14 @@ class Pool:
         '''
         
         # Alright, so, this partitions the pool
-        groups_array = np.split(self.persons, number_of_groups)
-#       print(groups_array)
+        groups_array = []
+        j = 0
+        for size in group_sizes:
+            group = []
+            for i in range(int(size)):
+                group.append(self.persons[i+j])
+            groups_array.append(group)
+            j += int(size)
 
         groups_all = []
         # For each group

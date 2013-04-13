@@ -62,36 +62,44 @@ def intermittent_process(iteration_num:int):
     # Each group should mate
     individual_groups = [group.poisson_mate() for group in individual_groups]
 # end of intermittent_process()
+
+def get_group_sizes(f:str):
+    '''
+    This returns an array of group sizes, from a file.
+    '''
+
+    # Obfuscated code entry??? It reads everything from a file, eliminates
+    # whitespace, converts it to floating-point form, and puts it into a nice
+    # little list for us.
+    return [float(i) for i in open(f, 'r').read().split()]
+
     
 def main():
     '''
     This parses command line arguments, then runs sim().
     '''
     
-    global number_of_people
-    global number_of_groups
     global number_of_runs
     global mean
     global standard_deviation
     global heritability
     global text_only
+    global group_sizes
 
     try:
-        number_of_people = int(sys.argv[1])
-        number_of_groups = int(sys.argv[2])
-        number_of_runs = int(sys.argv[3])
-        mean = float(sys.argv[4])
-        standard_deviation = float((sys.argv[5]))
-        heritability = float(sys.argv[6])
-        text_only = float(sys.argv[7])
+        number_of_runs = int(sys.argv[1])
+        mean = float(sys.argv[2])
+        standard_deviation = float((sys.argv[3]))
+        heritability = float(sys.argv[4])
+        text_only = float(sys.argv[5])
+        group_sizes = get_group_sizes(sys.argv[6])
 
-        print('Number of people: ', number_of_people)
-        print('Number of groups: ', number_of_groups)
         print('Number of runs: ', number_of_runs)
         print('Mean: ', mean)
         print('Standard deviation: ', standard_deviation)
         print('Heritability: ', heritability)
         print('Text-only output? ', text_only)
+        print('Group sizes: ', group_sizes)
         
         sim()
         
@@ -99,14 +107,13 @@ def main():
     except Exception:
         print(traceback.format_exc())
         
-        help_message = 'Usage: python main.py n g r m s h t\n'
-        help_message += 'n = sample size\n'
-        help_message += 'g = number of groups\n'
+        help_message = 'Usage: python main.py r m s h t g\n'
         help_message += 'r = number of runs\n'
         help_message += 'm = mean\n'
         help_message += 's = standard deviation\n'
         help_message += 'h = heritability\n'
         help_message += 't = text output only?\n'
+        help_message += 'g = groups file\n'
         
         print(help_message)
         exit()
@@ -117,12 +124,11 @@ def make_pool():
     This function makes, and returns a Pool object.
     '''
 
-    global number_of_people
-    global number_of_groups
     global number_of_runs
     global mean
     global standard_deviation
     global heritability
+    global group_sizes
     global genetic_population
     global env_population
 
@@ -130,6 +136,8 @@ def make_pool():
     variance = standard_deviation**2
     genetic_variance = heritability*variance
     genetic_standard_deviation = genetic_variance**0.5
+
+    number_of_people = np.sum(group_sizes)
 
     # The environmential variables are whatever is left
     env_variance = variance - genetic_variance
@@ -159,12 +167,11 @@ def sim():
     '''
     
     # Global variables
-    global number_of_people
-    global number_of_groups
     global number_of_runs
     global mean
     global standard_deviation
     global heritability
+    global group_sizes
     global general_pool
     global individual_groups
 
@@ -174,7 +181,7 @@ def sim():
     # Run the simulation
     for i in range(number_of_runs):
         # Split up the groups
-        individual_groups = general_pool.partition(number_of_groups)
+        individual_groups = general_pool.partition(group_sizes)
         
         # Run whatever is in intermittent_process()
         intermittent_process(i)
