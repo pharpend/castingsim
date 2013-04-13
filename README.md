@@ -87,4 +87,5 @@ doing something super fancy, your code should probably go there.
 ## Submitting patches/fixes/features
 
 Any contributions are welcome. Clone the code, modify it, upload it,
-file a pull request. You know the drill.
+file a pull
+request. [You know the drill.](https://help.github.com/articles/fork-a-repo)
