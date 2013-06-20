@@ -69,9 +69,8 @@ the same as
 
 ## Copying it, Modifying it, Redistributing it, etc.
 
-This code is licensed under the MIT License, which basically means you
-are free to use, modify, and redistribute the code without restriction
-or royalty. See the file called LICENSE for details.
+The code in this repo is in the public domain, so you are free to do
+with it as you choose.
 
 ## Modification for personal use
 
