@@ -22,7 +22,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pool
 
-def intermittent_process(iteration_num:int):
+
+def intermittent_process(iteration_num: int):
     '''
     This is the code that runs between the groups getting split up, and then put
     back together. The idea is, people can put whatever stat-collecting code in
@@ -39,10 +40,10 @@ def intermittent_process(iteration_num:int):
         # Make a histogram. This code was stolen from Stack Overflow
         # <http://stackoverflow.com/questions/5328556/histogram-matplotlib>.
         number_of_hist_bins = 250
-        hist, bins = np.histogram(iqs, bins = number_of_hist_bins)
-        width = 0.7*(bins[1]-bins[0])
-        center = (bins[:-1]+bins[1:])/2
-        plt.bar(center, hist, align = 'center', width = width)
+        hist, bins = np.histogram(iqs, bins=number_of_hist_bins)
+        width = 0.7 * (bins[1] - bins[0])
+        center = (bins[:-1] + bins[1:]) / 2
+        plt.bar(center, hist, align='center', width=width)
         plt.show()
 
     # This code prints out the various statistics
@@ -54,16 +55,17 @@ def intermittent_process(iteration_num:int):
     for group in individual_groups:
         group_num += 1
         dist = group.get_distribution()
-        
+
         print('==Group %d==' % group_num)
         print('Mean IQ: %.2f' % np.mean(dist))
         print('Stdv IQ: %.2f' % np.std(dist))
-        
+
     # Each group should mate
     individual_groups = [group.poisson_mate() for group in individual_groups]
 # end of intermittent_process()
 
-def get_group_sizes(f:str):
+
+def get_group_sizes(f: str):
     '''
     This returns an array of group sizes, from a file.
     '''
@@ -73,12 +75,12 @@ def get_group_sizes(f:str):
     # little list for us.
     return [float(i) for i in open(f, 'r').read().split()]
 
-    
+
 def main():
     '''
     This parses command line arguments, then runs sim().
     '''
-    
+
     global number_of_runs
     global mean
     global standard_deviation
@@ -100,13 +102,13 @@ def main():
         print('Heritability: ', heritability)
         print('Text-only output? ', text_only)
         print('Group sizes: ', group_sizes)
-        
+
         sim()
-        
+
     # If the arguments are invalid or don't exist
     except Exception:
         print(traceback.format_exc())
-        
+
         help_message = 'Usage: python main.py r m s h t g\n'
         help_message += 'r = number of runs\n'
         help_message += 'm = mean\n'
@@ -114,10 +116,11 @@ def main():
         help_message += 'h = heritability\n'
         help_message += 't = text output only?\n'
         help_message += 'g = groups file\n'
-        
+
         print(help_message)
         exit()
 # end of main()
+
 
 def make_pool():
     '''
@@ -133,27 +136,27 @@ def make_pool():
     global env_population
 
     # The genetic std is a bit harder
-    variance = standard_deviation**2
-    genetic_variance = heritability*variance
-    genetic_standard_deviation = genetic_variance**0.5
+    variance = standard_deviation ** 2
+    genetic_variance = heritability * variance
+    genetic_standard_deviation = genetic_variance ** 0.5
 
     number_of_people = np.sum(group_sizes)
 
     # The environmential variables are whatever is left
     env_variance = variance - genetic_variance
-    env_standard_deviation = env_variance**0.5
+    env_standard_deviation = env_variance ** 0.5
 
     # First, make the population according to a normal distribution
     genetic_population = np.random.normal(mean,
-                                        genetic_standard_deviation,
-                                        number_of_people)
+                                          genetic_standard_deviation,
+                                          number_of_people)
     env_population = np.random.normal(0,
                                       env_standard_deviation,
                                       number_of_people)
 
     return pool.Pool(genetic_population, env_population)
 # end of make_pool()
-    
+
 
 def sim():
     '''
@@ -165,7 +168,7 @@ def sim():
     The variance for IQ would be standard_deviation**2. So, the genetic standard
     deviation is sqrt(standard_deviation**2)*.8)
     '''
-    
+
     # Global variables
     global number_of_runs
     global mean
@@ -177,25 +180,24 @@ def sim():
 
     # Make the initial people objects
     general_pool = make_pool()
-    
+
     # Run the simulation
     for i in range(number_of_runs):
         # Split up the groups
         individual_groups = general_pool.partition(group_sizes)
-        
+
         # Run whatever is in intermittent_process()
         intermittent_process(i)
-        
+
         # Conglomerate the pools
         general_pool.drain()
         for group in individual_groups:
             general_pool += group
-            
+
     # end of for
-        
+
 # end of make()
-    
-    
+
 
 if __name__ == '__main__':
     main()

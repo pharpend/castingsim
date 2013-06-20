@@ -8,7 +8,9 @@ Copyright (C) 2013 Peter Harpending
 import random as r
 import numpy as np
 
+
 class Pool:
+
     '''
     This is a class for a group of people for the genetic casting simulator.
     '''
@@ -17,10 +19,11 @@ class Pool:
         '''
         Add two Pools together. Overloads the + operator
         '''
-        
-        all_genetic = list(self.genetic_population) + list(other.genetic_population)
+
+        all_genetic = list(self.genetic_population) + list(
+            other.genetic_population)
         all_env = list(self.env_population) + list(other.env_population)
-        
+
         all_genetic = np.array(all_genetic)
         all_env = np.array(all_env)
 
@@ -55,7 +58,8 @@ class Pool:
         This simply returns a list contiaining the IQ of each person.
         '''
 
-        iqs = [g+e for g, e in zip(self.genetic_population, self.env_population)]
+        iqs = [g + e for g, e in zip(
+            self.genetic_population, self.env_population)]
         return iqs
     # end of get_distribution()
 
@@ -63,7 +67,7 @@ class Pool:
         '''
         This makes the Pool.
         '''
-        
+
         '''
         This list comprehension is admittedly a bit dense. Basically, it makes a
         tuple associating each genetic value with an environmental value. Then, it
@@ -124,26 +128,26 @@ class Pool:
         # Make a pool, return it
         return Pool(children_genetic_vals, children_env_vals)
     # end of poisson_mate
-        
+
     def partition(self,
-                  group_sizes : list):
+                  group_sizes: list):
         '''
         Partitions the pool into groups of a specified size.
         '''
-        
+
         '''
         This code may be a bit difficult to read, but here goes. It partitions
         the pool into a set number of groups. Then, it constructs Pool objects
         out of those groups, and returns a list of those.
         '''
-        
+
         # Alright, so, this partitions the pool
         groups_array = []
         j = 0
         for size in group_sizes:
             group = []
             for i in range(int(size)):
-                group.append(self.persons[i+j])
+                group.append(self.persons[i + j])
             groups_array.append(group)
             j += int(size)
 
@@ -158,6 +162,5 @@ class Pool:
 
         return groups_all
     # end of partition()
-        
+
 # end of class
-    
