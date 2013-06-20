@@ -2,7 +2,7 @@
 
 '''
 Casting Simulator - This program simulates genetic casting in a meritocracy
-Copyright (C) 2013 Peter Harpending
+Any copyright is dedicated to the Public Domain.
 '''
 
 '''

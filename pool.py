@@ -2,7 +2,7 @@
 
 '''
 Pool - this is code for a group of people
-Copyright (C) 2013 Peter Harpending
+Any copyright is dedicated to the Public Domain.
 '''
 
 import random as r
