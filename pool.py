@@ -110,14 +110,14 @@ class Pool:
             # Get the genetic normal values
             parent_genetic_vals = np.array([parent[0] for parent in parents])
             parent_genetic_mean = np.mean(parent_genetic_vals)
-            parent_genetic_std = np.std(self.genetic_population) * np.sqrt(2)
+            population_genetic_std = np.std(self.genetic_population) * (np.sqrt(2)/2)
 
             # A note. The square root of 2 was a fudge factor I was told to
             # implement. I won't justify it.
 
             # Make the children
             child_genetic_val = np.random.normal(parent_genetic_mean,
-                                                 parent_genetic_std)
+                                                 population_genetic_std)
             child_env_val = np.random.normal(pool_env_mean, pool_env_std)
 
             # Add them

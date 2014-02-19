@@ -162,9 +162,6 @@ def sim():
     '''
     This function actually runs the simulation.
 
-    So, assuming the heritability is h, and the trait we are measuring is IQ,
-    the genetic mean for IQ is h*(mean_iq).
-
     The variance for IQ would be standard_deviation**2. So, the genetic standard
     deviation is sqrt(standard_deviation**2)*.8)
     '''
