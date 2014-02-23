@@ -46,22 +46,13 @@ def intermittent_process(iteration_num: int):
         plt.bar(center, hist, align='center', width=width)
         plt.show()
 
-    # This code prints out the various statistics
-    print('\nIteration: %d' % iteration_num)
-    # print('==General Pool==')
-    # print('Mean IQ: %.2f' % np.mean(iqs))
-    # print('Stdv IQ: %.2f' % np.std(iqs))
-    group_num = -1
-    for group in individual_groups:
-        group_num += 1
-        dist = group.get_distribution()
-
-        print('==Group %d==' % group_num)
-        print('Mean IQ: %.2f' % np.mean(dist))
-        print('Stdv IQ: %.2f' % np.std(dist))
-
-    # Each group should mate
     individual_groups = [group.poisson_mate() for group in individual_groups]
+    dists = [group.get_distribution() for group in individual_groups]
+
+    print("\n")
+    [print(('%.2f' % np.mean(dist)), end=' ') for dist in dists]
+    print("")
+    [print(('%.2f' % np.std(dist)), end=' ') for dist in dists]
 # end of intermittent_process()
 
 
@@ -104,6 +95,8 @@ def main():
         print('Group sizes: ', group_sizes)
 
         sim()
+
+        print("")
 
     # If the arguments are invalid or don't exist
     except Exception:
