@@ -24,7 +24,7 @@ def main():
 
     pool = Pool(group_sizes, normal_trait=normal_trait, one_trait=one_trait)
 
-    [[print(agent.traits) for agent in group] for group in pool.get_groups()]
+    [[print(agent.normal_trait) for agent in group] for group in pool]
 
 if __name__ == '__main__':
     main()
