@@ -9,22 +9,27 @@ to Pool(), which generates a pool.
 """
 
 import sys
+
 import numpy as np
-from trait import Trait
+
+from generator import Generator
 from pool import Pool
+from trait import Trait
 
 
 def main():
     # The group sizes are specified by the command line arguments
-    group_sizes = (int(a) for a in sys.argv[1:])
+    number_of_generations = int(sys.argv[1])
+    group_sizes = (int(a) for a in sys.argv[2:])
 
     # This is a trait that is normally distributed
-    normal_trait = Trait(np.random.normal)
-    one_trait = Trait(lambda: 1)
+    normal_trait = Trait()
+    pool = Pool(group_sizes, normal_trait)
+    pool.mate()
+    gen = Generator(pool, number_of_generations)
 
-    pool = Pool(group_sizes, normal_trait=normal_trait, one_trait=one_trait)
+    # [[[print(t.name, v) for t,v in a] for a in g] for g in pool]
 
-    [[print(agent.normal_trait) for agent in group] for group in pool]
 
 if __name__ == '__main__':
     main()

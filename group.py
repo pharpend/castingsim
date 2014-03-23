@@ -6,16 +6,24 @@ Group of agents
 
 """
 
-from agent import Agent
+import numpy as np
 
 
 class Group:
     def __init__(self, n, traits):
         self.n = n
         self.traits = traits
-        self.agents = (Agent(**{tn: tv.get_variate()
-                                for tn, tv in self.traits.items()})
-                       for i in range(n))
 
     def __iter__(self):
-        return self.agents
+        for a in self.agents:
+            yield a
+
+    def means(self):
+        return {tn: np.mean(np.array([agent.traits[tn]
+                                      for agent in self.agents]))
+                for tn in self.traits}
+
+    def stds(self):
+        return {tn: np.std(np.array([agent.traits[tn]
+                                    for agent in self.agents]))
+                for tn in self.traits}
