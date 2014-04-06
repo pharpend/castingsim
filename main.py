@@ -102,13 +102,13 @@ def main():
     except Exception:
         print(traceback.format_exc())
 
-        help_message = 'Usage: python main.py r m s h t g\n'
+        help_message = 'Usage: python main.py r m s h t &rest g\n'
         help_message += 'r = number of runs\n'
         help_message += 'm = mean\n'
         help_message += 's = standard deviation\n'
         help_message += 'h = heritability\n'
         help_message += 't = text output only?\n'
-        help_message += 'g = groups file\n'
+        help_message += 'g = groups\n'
 
         print(help_message)
         exit()

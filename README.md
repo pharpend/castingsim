@@ -22,7 +22,7 @@ For this program to work, you need Python>=3.3, Numpy>=1.7, and MatPlotLib>=1.2
 `main.py` is executable. To run a simulation, run
 
 ```
-$ ./main.py r m s h t g
+$ ./main.py r m s h t &rest g
 ```
 
 * `r` is the number of runs; that is, the number of generations over
@@ -32,38 +32,8 @@ $ ./main.py r m s h t g
   factor of said merit.
 * `t` is either `0` or `1`, depending on whether you want graphs or not,
   irrespectively.
-* `g` is what we call the `groups` file. The program works by splitting
-  the general population into individual groups, and having each group
-  mate seperately. The size of each group is specified in the `groups`
-  file. `g` is the path to this file.
+* `g` is the list of group sizes
   
-Say you want five groups, each with 1000 people; this would be your
-`groups` file.
-
-```
-1000 1000 1000 1000 1000
-```
-
-If you want two groups, one with 10 000 people, and the other with 10,
-this will be your `groups` file.
-
-```
-10000 10
-```
-
-Newlines and tabs are okay. Each number can be separated by any amount
-of white space. The previous `groups` file will be interpreted exactly
-the same as
-
-```
-10000
-
-
-
-
-
-        10
-```
 
 # Modifying the code
 
