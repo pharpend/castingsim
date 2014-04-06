@@ -56,7 +56,7 @@ def intermittent_process(iteration_num: int):
 # end of intermittent_process()
 
 
-def get_group_sizes(f: str):
+def get_group_sizes(l: list):
     '''
     This returns an array of group sizes, from a file.
     '''
@@ -64,7 +64,7 @@ def get_group_sizes(f: str):
     # Obfuscated code entry??? It reads everything from a file, eliminates
     # whitespace, converts it to floating-point form, and puts it into a nice
     # little list for us.
-    return [float(i) for i in open(f, 'r').read().split()]
+    return [float(i) for i in l]
 
 
 def main():
@@ -85,7 +85,7 @@ def main():
         standard_deviation = float((sys.argv[3]))
         heritability = float(sys.argv[4])
         text_only = float(sys.argv[5])
-        group_sizes = get_group_sizes(sys.argv[6])
+        group_sizes = get_group_sizes(sys.argv[6:])
 
         print('Number of runs: ', number_of_runs)
         print('Mean: ', mean)
@@ -147,7 +147,7 @@ def make_pool():
                                       env_standard_deviation,
                                       number_of_people)
 
-    return pool.Pool(genetic_population, env_population)
+    return pool.Pool.make_initial_pool(genetic_population, env_population)
 # end of make_pool()
 
 
