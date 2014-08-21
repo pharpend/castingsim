@@ -1,0 +1,13 @@
+{
+  "number-of-runs": 5,
+  "mean-iq": 100,
+  "stdv-iq": 15,
+  "heritability": 0.5,
+  "pool-sizes": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ]
+}

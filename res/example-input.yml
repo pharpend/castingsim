@@ -1,0 +1,10 @@
+pool-sizes:
+- 1000
+- 1000
+- 1000
+- 1000
+- 1000
+heritability: 0.5
+mean-iq: 100
+stdv-iq: 15
+number-of-runs: 5
