@@ -1,10 +1,12 @@
--- |
--- Module       : Data.Semiring.Tropical.Skel
--- Description  : A module for Tropical whatever
--- Copyright    : 2014, Peter Harpending
--- License      : BSD3
--- Maintainer   : Peter Harpending <pharpend2@gmail.com>
--- Stability    : experimental
--- Portability  : archlinux
+{-|
+Module       : Skel
+Description  : A module
+Copyright    : None
+License      : PublicDomain
+Maintainer   : Peter Harpending <pharpend2@gmail.com>
+Stability    : experimental
+Portability  : Linux-3.16
 
-module Data.Semiring.Tropical.Skel where
+-}
+
+module Skel where
